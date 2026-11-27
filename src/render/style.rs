@@ -1,9 +1,11 @@
 //! # style
 //! Items for styling widgets
 
+use std::fmt;
+
 /// # Style
 /// Hold information about an object's styling
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Default)]
 pub struct Style {
     foreground: Option<Color>,
     background: Option<Color>,
@@ -11,9 +13,8 @@ pub struct Style {
     bold: Option<bool>,
 }
 
-impl ToString for Style {
-    /// Convert this `Style` to a `String` that renders it
-    fn to_string(&self) -> String {
+impl fmt::Display for Style {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let mut string = String::new();
         if let Some(foreground) = self.foreground {
             string.push_str(&foreground.as_foreground())
@@ -30,7 +31,33 @@ impl ToString for Style {
             string.push_str(if bold { "\x1b[1m" } else { "\x1b[22m" });
         }
 
-        string
+        write!(f, "{string}")
+    }
+}
+
+impl Style {
+    /// Copy self, set foreground color, and return self
+    pub fn foreground(mut self, color: Option<Color>) -> Self {
+        self.foreground = color;
+        self
+    }
+
+    /// Copy self, set background color, and return self
+    pub fn background(mut self, color: Option<Color>) -> Self {
+        self.background = color;
+        self
+    }
+
+    /// Copy self, set whether to be italic, not be italic, or inherit, and return self
+    pub fn italic(mut self, italic: Option<bool>) -> Self {
+        self.italic = italic;
+        self
+    }
+
+    /// Copy self, wet whether to be bold, not be bold, or inherit, and return self
+    pub fn bold(mut self, bold: Option<bool>) -> Self {
+        self.bold = bold;
+        self
     }
 }
 
