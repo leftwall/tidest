@@ -5,7 +5,7 @@ use std::fmt;
 
 /// # Style
 /// Hold information about an object's styling
-#[derive(Clone, Copy, Debug, PartialEq, Default)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Default, Hash)]
 pub struct Style {
     foreground: Option<Color>,
     background: Option<Color>,
@@ -63,7 +63,7 @@ impl Style {
 
 /// # Color
 /// Represents possible color values
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum Color {
     RGB(u8, u8, u8),
     Red,
